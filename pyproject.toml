@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "polls-app"
+version = "0.1.0"
+description = ""
+authors = ["Kamil Biktimirov <Biktimirov.kamil@yandex.ru>"]
+license = "MIT License"
+readme = "README.md"
+packages = [{include = "polls_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+django = "^5.0.2"
+djangorestframework = "^3.14.0"
+markdown = "^3.5.2"
+django-filter = "^23.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
