@@ -14,9 +14,34 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
+from polls.admin_views import AdminPollsViewSet
+from polls.users_views import (
+    UsersMultipleChoicesAnswersListCreateAPIView,
+    UsersPassedPollsListAPIView,
+    UsersPollsListAPIView,
+    UsersSingleChoiceAnswersListCreateAPIView,
+    UsersTextAnswersListCreateAPIView,
+)
 
 urlpatterns = [
+    path("api/v1/api-auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
+    path("api/v1/admin/polls", AdminPollsViewSet.as_view({"get": "list"})),
+    path("api/v1/polls", UsersPollsListAPIView.as_view()),
+    path(
+        "api/v1/polls/answers/text",
+        UsersTextAnswersListCreateAPIView.as_view(),
+    ),
+    path(
+        "api/v1/polls/answers/singlechoice",
+        UsersSingleChoiceAnswersListCreateAPIView.as_view(),
+    ),
+    path(
+        "api/v1/polls/answers/multiplechoice",
+        UsersMultipleChoicesAnswersListCreateAPIView.as_view(),
+    ),
+    path("api/v1/polls/passed", UsersPassedPollsListAPIView.as_view()),
 ]
