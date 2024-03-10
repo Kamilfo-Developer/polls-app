@@ -2,6 +2,7 @@ from django.db import transaction
 from rest_framework import generics, viewsets
 from rest_framework.fields import datetime
 from rest_framework.mixins import Response
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
 
 from .models import MultipleChoicesAnswer, Poll, SingleChoiceAnswer, TextAnswer
@@ -43,10 +44,9 @@ class UsersMultipleChoicesAnswersListCreateAPIView(generics.ListCreateAPIView):
 
 
 class UsersPassedPollsListAPIView(generics.ListAPIView):
-    def list(self, request: Request) -> Response:
-        # if request.auth is None:
-        #     return Response(data={"polls": []})
+    permission_classes = [IsAuthenticated]
 
+    def list(self, request: Request) -> Response:
         user = request.user.id
 
         passed_polls = (
