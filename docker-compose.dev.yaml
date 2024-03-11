@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  app:
+    build: 
+      dockerfile: Dockerfile
+    command: python polls_app/manage.py runserver 0.0.0.0:8000
+    restart: always
+    env_file:
+      - .env.dev
+    environment:
+      - SA_DB_PROVIDER=postgres
+      - POSTGRES_HOST=db
+    depends_on: 
+      - db
+    networks:
+      - bot_network
+    ports:
+      - '8000:8000' 
+
+  db:
+    image: postgres:latest
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    env_file:
+      - .env.dev
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    networks:
+      - bot_network
+    ports:
+      - '5432:5432'
+
+networks:
+  bot_network:
+    driver: bridge
+
+volumes:
+  db-data:
+
