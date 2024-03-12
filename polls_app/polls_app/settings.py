@@ -86,8 +86,8 @@ WSGI_APPLICATION = "polls_app.wsgi.application"
 POSTGRES_CONFIG = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_NAME"),
-        "USER": os.getenv("POSTGRES_USER"),
+        "NAME": os.getenv("POSTGRES_DB_NAME"),
+        "USER": os.getenv("POSTGRES_USERNAME"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         "HOST": os.getenv("POSTGRES_HOST"),
         "PORT": os.getenv("POSTGRES_PORT"),
@@ -101,10 +101,13 @@ SQLITE_CONFIG = {
     }
 }
 
-DATABASE_TO_USE = os.getenv("DATABASE_TYPE", "SQLITE")
+DATABASE_TO_USE = os.getenv("DATABASE_TO_USE", "SQLITE")
 
 if DATABASE_TO_USE not in ["SQLITE", "POSTGRES"]:
-    warn("Unknown database type, SQLITE selected as default")
+    warn(
+        "Unknown database type, it should be SQLITE or POSTGRES, "
+        "SQLITE selected by default"
+    )
 
 DATABASES = POSTGRES_CONFIG if DATABASE_TO_USE == "POSTGRES" else SQLITE_CONFIG
 
