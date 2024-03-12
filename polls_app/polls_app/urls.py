@@ -17,6 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from polls.admin_views import AdminPollsViewSet
 from polls.users_views import (
     UsersMultipleChoicesAnswersListCreateAPIView,
@@ -44,4 +49,16 @@ urlpatterns = [
         UsersMultipleChoicesAnswersListCreateAPIView.as_view(),
     ),
     path("api/v1/polls/passed", UsersPassedPollsListAPIView.as_view()),
+    path("api/v1/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional UI:
+    path(
+        "api/v1/schema/swagger-ui/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger-ui",
+    ),
+    path(
+        "api/v1/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
 ]
