@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from warnings import warn
 
 from dotenv import load_dotenv
 
@@ -81,12 +82,31 @@ WSGI_APPLICATION = "polls_app.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
+
+POSTGRES_CONFIG = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("POSTGRES_NAME"),
+        "USER": os.getenv("POSTGRES_USER"),
+        "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+        "HOST": os.getenv("POSTGRES_HOST"),
+        "PORT": os.getenv("POSTGRES_PORT"),
+    }
+}
+
+SQLITE_CONFIG = {
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         "NAME": BASE_DIR / "db.sqlite3",
     }
 }
+
+DATABASE_TO_USE = os.getenv("DATABASE_TYPE", "SQLITE")
+
+if DATABASE_TO_USE not in ["SQLITE", "POSTGRES"]:
+    warn("Unknown database type, SQLITE selected as default")
+
+DATABASES = POSTGRES_CONFIG if DATABASE_TO_USE == "POSTGRES" else SQLITE_CONFIG
 
 
 # Password validation
