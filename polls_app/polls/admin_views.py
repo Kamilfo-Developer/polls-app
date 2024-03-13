@@ -19,7 +19,9 @@ from .serializers import (
 # Create your views here.
 
 
-class AdminPollsViewSet(viewsets.ModelViewSet):
+class AdminPollsViewSet(
+    generics.RetrieveUpdateDestroyAPIView, generics.ListCreateAPIView
+):
     queryset = Poll.objects.all()
     serializer_class = PollSerializer
 

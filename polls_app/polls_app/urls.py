@@ -35,15 +35,8 @@ urlpatterns = [
     path("api/v1/api-auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
     path(
-        "api/v1/admin/polls",
-        AdminPollsViewSet.as_view(
-            {
-                "get": "list",
-                "delete": "destroy",
-                "post": "create",
-                "put": "update",
-            }
-        ),
+        "api/v1/admin/polls/",
+        AdminPollsViewSet.as_view(),
     ),
     path("api/v1/polls", UsersPollsListAPIView.as_view()),
     path(
