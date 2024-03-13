@@ -34,7 +34,17 @@ from polls.users_views import (
 urlpatterns = [
     path("api/v1/api-auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
-    path("api/v1/admin/polls", AdminPollsViewSet.as_view({"get": "list"})),
+    path(
+        "api/v1/admin/polls",
+        AdminPollsViewSet.as_view(
+            {
+                "get": "list",
+                "delete": "destroy",
+                "post": "create",
+                "put": "update",
+            }
+        ),
+    ),
     path("api/v1/polls", UsersPollsListAPIView.as_view()),
     path(
         "api/v1/polls/answers/text",

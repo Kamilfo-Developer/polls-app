@@ -45,6 +45,7 @@ class UsersMultipleChoicesAnswersListCreateAPIView(generics.ListCreateAPIView):
 
 class UsersPassedPollsListAPIView(generics.ListAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = PassedPollSerializer
 
     def list(self, request: Request) -> Response:
         user = request.user.id
@@ -57,6 +58,6 @@ class UsersPassedPollsListAPIView(generics.ListAPIView):
             )
         )
 
-        serializer = PassedPollSerializer(passed_polls, many=True)
+        serializer = self.serializer_class(passed_polls, many=True)
 
         return Response(data={"polls": serializer.data})
